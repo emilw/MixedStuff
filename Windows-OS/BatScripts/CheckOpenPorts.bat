@@ -1,0 +1,1 @@
+netstat -o -n -a | findstr 19312
