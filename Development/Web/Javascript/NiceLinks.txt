@@ -1,0 +1,3 @@
+
+Uri management(Save from stream):
+http://www.hiddentao.com/archives/2011/07/04/javascript-client-side-file-generation-and-download/

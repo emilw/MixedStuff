@@ -1,0 +1,42 @@
+<html>
+<script src="http://code.jquery.com/jquery-1.8.3.js"></script>
+<script>
+function generateexcel(tableid) {
+  var table= document.getElementById(tableid);
+  var html = table.outerHTML;
+  var content = 'data:application/vnd.ms-excel,' + encodeURIComponent(html);
+  window.open(content, 'Open in excel');
+};
+
+$(document).ready(function() {
+	generateexcel("MyTable");
+	//alert("mjau");
+});
+
+</script>
+<body>
+<table Id="MyTable">
+<tr>
+	<td>Hello</td>
+	<td>Test</td>
+</tr>
+<tr>
+	<td>Hello2</td>
+	<td>Test3</td>
+</tr>
+<tr>
+	<td>Hello2</td>
+	<td>Test3</td>
+</tr>
+<tr>
+	<td>Hello2</td>
+	<td>Test3</td>
+</tr>
+<tr>
+	<td>Hello2</td>
+	<td>Test3</td>
+</tr>
+</table>
+asdas
+</body>
+</html>
