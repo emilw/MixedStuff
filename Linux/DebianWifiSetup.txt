@@ -1,0 +1,14 @@
+Configure WiFi in Debian
+
+iwlist scan
+
+Read the manual
+zless /usr/share/doc/wpasupplicant/README.modes.gz
+
+source /etc/network/interfaces.d/*
+
+#Configure wireless network with WPA/WPA2 PSK
+auto wlan0
+iface wlan0 inet dhcp
+	wpa-ssid MYNETWORK
+	wpa-psk "WifiPassword"
