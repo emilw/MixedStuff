@@ -1,0 +1,29 @@
+Configure WiFi in Debian
+
+iwlist scan
+
+Read the manual
+zless /usr/share/doc/wpasupplicant/README.modes.gz
+
+source /etc/network/interfaces.d/*
+
+#Configure wireless network with WPA/WPA2 PSK
+auto wlan0
+iface wlan0 inet dhcp
+	wpa-ssid MYNETWORK
+	wpa-psk "WifiPassword"
+
+
+#Check the routing table
+route -n
+
+#Add new route/gateway
+route add default gw 192.168.1.1
+
+ping 8.8.8.8
+
+nslookup google.com
+
+
+#DNS
+/etc/resolve.conf

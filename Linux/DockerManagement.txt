@@ -1,0 +1,14 @@
+#List images installed
+sudo docker images
+#Run an image from repository debian32
+sudo docker run -t -i debian32 /bin/bash
+#Apply some changes to the container in that bash, i added /tmp/myFile.txt
+
+#Save the changes as a new container e.g. -m Commit message and -a as Author information, the GUID is retrieved from the command line when starting the first container
+sudo docker commit -m Added /tmp/myFile.txt -a Emil W 10f7d917344a emilw/debian:v2
+
+#List all images again, the newly created emilw/debia:v2 should be there now
+sudo docker images
+
+#Run the new container, check /tmp/myFile.txt, it should be there. If you run the intitial one, the file is not there
+sudo docker run -t -i emilw/debian:v2 /bin/bash
