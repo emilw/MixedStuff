@@ -1,0 +1,5 @@
+Create Database TenantDatabaseFeb28
+
+Go
+ALTER DATABASE TestPlatformMar15
+SET READ_COMMITTED_SNAPSHOT ON
