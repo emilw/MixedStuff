@@ -2,6 +2,7 @@
 --Edi documents import times
 --Assumption, diff is between doc is created and last save. The last save involves setting the doc id in the "real" flow
 --Includes all without an error
+Select 'EDI documents import times where no import error occure. Per month'
 Select 'EDI docs: ', LEFT(CONVERT(varchar, d.CreatedTimestamp,112),6) As YearMonth, AVG(DATEDIFF(MILLISECOND, d.CreatedTimestamp, d.ChangedTimestamp)) as ImportTimeMs, COUNT(*) as NumberOfDocs
 /*d.Id As EDIDocId, d.CreatedTimestamp, d.ChangedTimestamp, t.Created, edi.SavedDocument_id As RealDocId*/
 From [Medius.Core.Entities.Integration].EDIDocumentImport edi Inner Join [Medius.Data].Document d On(d.Id = edi.Document_id) 
@@ -12,6 +13,7 @@ Group By LEFT(CONVERT(varchar, d.CreatedTimestamp,112),6)
 
 --Expense invoice import speed
 --Assumption that it is tracked to documentIsRegistered
+Select 'Expense invoice import times. Per month'
 Select 'Expense docs: ', LEFT(CONVERT(varchar, d.CreatedTimestamp,112),6) As YearMonth, AVG(DATEDIFF(MILLISECOND, d.CreatedTimestamp, task.Created)) as ImportTimeMs, COUNT(*) as NumberOfDocs
 /*d.Id as DocumentId, d.CreatedTimestamp, d.ChangedTimestamp, task.Created, */
 from [Medius.Data].Document d Inner Join [Medius.PurchaseToPay.Entities].SupplierInvoice si On(si.Document_id = d.Id)
@@ -23,6 +25,7 @@ Group By LEFT(CONVERT(varchar, d.CreatedTimestamp,112),6)
 
 --Match invoice import speed
 --Assumption that it is tracked to document is registered
+Select 'Match invoice import times. Per month'
 Select 'Match docs: ', LEFT(CONVERT(varchar, d.CreatedTimestamp,112),6) As YearMonth, AVG(DATEDIFF(MILLISECOND, d.CreatedTimestamp, task.Created)) as ImportTimeMs, COUNT(*) as NumberOfDocs
 /*d.Id as DocumentId, d.CreatedTimestamp, d.ChangedTimestamp, task.Created, */
 from [Medius.Data].Document d Inner Join [Medius.PurchaseToPay.Entities].SupplierInvoice si On(si.Document_id = d.Id)
@@ -33,6 +36,7 @@ Where task.Description = '#Core/documentRegistered'
 Group By LEFT(CONVERT(varchar, d.CreatedTimestamp,112),6)
 
 --EDI document with errors
+Select 'How many EDI documents end up in Error per month'
 Select 'EDI errors: ', LEFT(CONVERT(varchar, er.CreatedTimestamp,112),6) As YearMonth, Count(distinct er.SourceEntity_EntityViewId) As DocumentsWithErrors
 /*d.Id As EDIDocId, d.CreatedTimestamp, d.ChangedTimestamp, t.Created, edi.SavedDocument_id As RealDocId*/
 From [Medius.Core.Entities.EntityMetadata].EntityError er
