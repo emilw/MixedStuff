@@ -1,3 +1,5 @@
+set nocount on
+
 Select * Into #TablesAndTheirSizes
 From 
 ( Select o.name As Name, p.rows As NumberOfRows, ps.used_page_count*8 As TotalSize, ps.in_row_data_page_count*8 As DataSize,
