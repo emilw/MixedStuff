@@ -35,7 +35,7 @@ From #TablesAndTheirSizes
 Where TotalSize > 100*1024 --(To get it to Kb)
 Order by TotalSize Desc
 
---Missing indexes
+--List all missing indexes
 Select * From sys.dm_db_missing_index_details
 
 Select 'Business figures'
