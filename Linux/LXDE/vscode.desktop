@@ -1,0 +1,7 @@
+[Desktop Entry]
+Encoding=UTF-8
+Type=Application
+Name=Visual Studio Code
+Exec=/opt/VisualStudioCode/Code
+StartupNotify=true
+Categories=Development
