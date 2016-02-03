@@ -1,5 +1,5 @@
-Create Database TenantDatabaseFeb28
+Create Database BohusArchive
 
 Go
-ALTER DATABASE TestPlatformMar15
+ALTER DATABASE BohusArchive
 SET READ_COMMITTED_SNAPSHOT ON
