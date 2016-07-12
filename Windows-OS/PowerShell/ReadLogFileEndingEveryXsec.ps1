@@ -1,0 +1,1 @@
+while(1){(Get-Content E:\approot\backend.txt | Select-Object -last 50); Start-Sleep 10;}
