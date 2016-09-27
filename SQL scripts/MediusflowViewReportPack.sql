@@ -18,15 +18,19 @@ Go
 Create View [Medius.Reporting].SupplierInvoice as
 Select si.Document_id As DocumentId, si.InvoiceNumber as InvoiceNumber, si.InvoiceDate as InvoiceDate, c.Name as CompanyName,
 c.CompanyId As ERPCompanyId, s.Name As SupplierName, s.SupplierId As ERPSupplierId, si.Gross_Number_Value as GrossAmount, curr.Code as CurrencyCode,
-p.Name as PaymentTerm, d.CreatedTimestamp As CreatedTimestamp
+p.Name as PaymentTerm, d.CreatedTimestamp As CreatedTimestamp, IsNull(closedDocs.ClosedStat, 'Open') As Status, d.DocumentTypeDescription
 From [Medius.PurchaseToPay.Entities].SupplierInvoice si
 	Inner Join [Medius.Data].Document d On(d.Id = si.Document_id)
 	Inner Join [Medius.Core.Entities].Company c On(c.Id = si.Company_id)
 	Inner Join [Medius.Enterprise.Entities].Supplier s On(s.Id = si.Supplier_id)
 	Inner Join [Medius.Core.Entities].Currency curr On(curr.Id = si.Gross_Currency_id)
 	Inner Join [Medius.Enterprise.Entities].PaymentTerm p On(p.Id = s.PaymentTerm_id)
+	Left Outer Join (Select closed.Document_id as DocumentId, (Case When closed.Description = '#Enterprise/archived' Then 'Archived' Else 'Canceled' End) As ClosedStat
+		From [Medius.Data].Task closed
+		Where closed.State = 'Complete' And closed.Description In ('#Enterprise/archived', '#Enterprise/invalidated')) As closedDocs On(closedDocs.DocumentId = si.Document_id)
 
 go
+--167222
 
 if((select count(*) from sys.views where name = 'WorkflowStep') = 1)
 begin
@@ -37,15 +41,17 @@ Go
 
 
 Create View [Medius.Reporting].WorkflowStep as
-Select dt.Document_id as DocumentId, t.State as State, t.CreatedTimestamp as TaskCreated, t.ChangedTimestamp as TaskClosed,
+Select t.Document_id as DocumentId, t.State as State, t.CreatedTimestamp as TaskCreated, t.ChangedTimestamp as TaskClosed,
 te.Value as WorkflowStateName, lang.Language as Language, (Case When u.Id is null Then 0 else 1 end) As IsUserRelatedTask,
-u.FirstName As ClosedByUserFirstName, u.LastName As ClosedByUserLastName,u.UserName As ClosedByUserUserName
-From [Medius.Core.Entities].[DocumentTask] dt
-Inner Join [Medius.Data].Task t On(t.Id = dt.Task_id)
-Inner Join [Medius.Data].TranslationEntry te On(te.TranslationKey = t.Description)
+u.FirstName As ClosedByUserFirstName, u.LastName As ClosedByUserLastName,u.UserName As ClosedByUserUserName,
+ua.FirstName As AssignedToUserFirstName, ua.LastName As AssignedToUserLastName,ua.UserName As AssignedToUserUserName,
+ra.Name As AssignedToRole, ta.IsDelegation As IsDelegated, ta.IsEscalation As IsEscalated
+From [Medius.Data].Task t Inner Join [Medius.Data].TranslationEntry te On(te.TranslationKey = t.Description)
 Inner Join [Medius.Data].Translation lang On(lang.Language = te.Language)
-Left Outer Join [Medius.Core.Entities.Workflow].[UserTask] ut On(ut.DocumentTask_id = dt.Task_id)
-Left Outer Join [Medius.Core.Entities].[User] u On(u.Id = ut.ClosedBy_id)
+Inner Join [Medius.Core.Entities.Workflow].[TaskAssignment] ta On(ta.Task_Id = t.Id)
+Left Outer Join [Medius.Core.Entities].[User] u On(u.Id = t.ClosedBy_id)
+Left Outer Join [Medius.Core.Entities].[Role] ra On(ra.Id = ta.Assignee_Id)
+Left Outer Join [Medius.Core.Entities].[User] ua On(ua.ID = ra.Owner_id)
 
 Go
 
