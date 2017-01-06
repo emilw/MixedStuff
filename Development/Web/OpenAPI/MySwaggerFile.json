@@ -990,6 +990,9 @@
                 },
                 "photoUrls2": {
                     "type": "array",
+                    "xml": {
+                        "name": "photoUrl2"
+                    },
                     "items": {
                         "type": "string"
                     }
