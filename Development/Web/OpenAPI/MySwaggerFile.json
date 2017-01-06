@@ -1000,15 +1000,15 @@
 
                 "ArrayNoWrapAndDefinedParentAndChild": {
                     "type": "array",
-                    "xml": {
-                        "name":"Parent",
-                        "wrapped":false
-                    },
                     "items": {
                         "type": "string",
                         "xml":{
                             "name":"Child"
                         }
+                    },
+                    "xml": {
+                        "name":"Parent",
+                        "wrapped":false
                     }
                 },
                 "tags": {
