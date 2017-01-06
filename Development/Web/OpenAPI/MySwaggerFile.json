@@ -1001,12 +1001,13 @@
                 "ArrayNoWrapAndDefinedParentAndChild": {
                     "type": "array",
                     "xml": {
-                        "name":"Parent"
+                        "name":"Parent",
+                        "wrapped":false
                     },
                     "items": {
                         "type": "string",
                         "xml":{
-                            "name":"child"
+                            "name":"Child"
                         }
                     }
                 },
