@@ -978,24 +978,36 @@
                     "type": "string",
                     "example": "doggie"
                 },
-                "photoUrls": {
+                "ArrayWrappedAndPropName": {
                     "type": "array",
                     "xml": {
-                        "name": "photoUrl",
+                        "name": "WrappedAndPropDName",
                         "wrapped": true
                     },
                     "items": {
                         "type": "string"
                     }
                 },
-                "photoUrls2": {
+                "ArrayOnlyWrapped": {
                     "type": "array",
                     "xml": {
-                        "name": "photoUrl2",
                         "wrapped":true
                     },
                     "items": {
                         "type": "string"
+                    }
+                },
+
+                "ArrayNoWrapAndDefinedParentAndChild": {
+                    "type": "array",
+                    "xml": {
+                        "name":"Parent"
+                    },
+                    "items": {
+                        "type": "string",
+                        "xml":{
+                            "name":"child"
+                        }
                     }
                 },
                 "tags": {
