@@ -991,7 +991,8 @@
                 "photoUrls2": {
                     "type": "array",
                     "xml": {
-                        "name": "photoUrl2"
+                        "name": "photoUrl2",
+                        "wrapped":true
                     },
                     "items": {
                         "type": "string"
