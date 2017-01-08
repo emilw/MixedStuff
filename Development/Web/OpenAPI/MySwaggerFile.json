@@ -1021,6 +1021,12 @@
                         "$ref": "#/definitions/Tag"
                     }
                 },
+                "PlainVanillaArray": {
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    }
+                },
                 "status": {
                     "type": "string",
                     "description": "pet status in the store",
