@@ -30,7 +30,10 @@
                     "type": "string"
                 },
                 "AccrualCodeString": {
-                    "$ref": "#/definitions/IntegrationCodingDimensionsDto"
+                    "$ref": "#/definitions/IntegrationCodingDimensionsDto",
+					"xml":{
+						"name":"AccrualCodeString"
+					}
                 },
                 "AccrualPeriods": {
                     "type": "array",
