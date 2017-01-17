@@ -10,10 +10,12 @@
         "https"
     ],
     "consumes": [
-        "application/json"
+        "application/json",
+        "application/xml"
     ],
     "produces": [
-        "application/json"
+        "application/json",
+        "application/xml"
     ],
     "definitions": {
         "IntegrationAccrualTemplateDto": {
