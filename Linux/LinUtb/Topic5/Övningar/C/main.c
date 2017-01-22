@@ -1,5 +1,5 @@
 #include <stdio.h>
-#include "my_add.c"
+//#include "my_add.c"
 
 int main(int argc, char **argv)
 {

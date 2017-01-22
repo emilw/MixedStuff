@@ -1,28 +1,3 @@
-#Övning 5
-
-##Bygg kommandon
-Alla bygg kommandon ligger i respektive mapp som ett sh bash script.
-
-###A
-```bash
-gcc my_add_2.c -o plus_2
-```
-
-###B
-```bash
-gcc my_add_x.c -o plus_x
-```
-
-###C
-```bash
-#In steps
-gcc -c my_add.c -o my_add.o
-gcc -c main.c -o main.o
-gcc -o plus_x my_add.o main.o lime@ewautomation:~/Repos/MixedStuff/Linux/LinUtb/
-```
-
-###D
-```bash
 all: program
 
 program: a_functions.o b_functions.o c_functions.o d_functions.o main.o
@@ -52,4 +27,3 @@ install: program
 
 uninstall:
 	rm /usr/local/bin/program1
-```
