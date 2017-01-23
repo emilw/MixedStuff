@@ -1,19 +1,21 @@
-#Övning 5
 
-##Bygg kommandon
-Alla bygg kommandon ligger i respektive mapp som ett sh bash script.
 
-###A
+# Övning 5
+
+## Bygg kommandon
+Alla bygg kommandon ligger i respektive mapp som ett sh bash script, förutom uppgift D, där ligger allt i makefilen.
+
+### A
 ```bash
 gcc my_add_2.c -o plus_2
 ```
 
-###B
+### B
 ```bash
 gcc my_add_x.c -o plus_x
 ```
 
-###C
+### C
 ```bash
 #In steps
 gcc -c my_add.c -o my_add.o
@@ -21,7 +23,7 @@ gcc -c main.c -o main.o
 gcc -o plus_x my_add.o main.o lime@ewautomation:~/Repos/MixedStuff/Linux/LinUtb/
 ```
 
-###D
+### D
 ```bash
 all: program
 
