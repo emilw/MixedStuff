@@ -1,3 +1,5 @@
+
+
 # Övning 2
 
 ## 1. Del 1
@@ -91,7 +93,7 @@ lisap:x:1003:1003:Lisa Persson,,,:/home/lisap:/bin/bash
 *A*
 
 ```bash
-find . -size +1M | sort
+find . -maxdepth 1  -size +1M | sort
 ```
 Find kommandot returnererar alla filer som är större än 1 Mb
 Sort kommandot sorterar dessa
