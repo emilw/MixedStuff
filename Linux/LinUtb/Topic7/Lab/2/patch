@@ -1,0 +1,15 @@
+diff -ruN diffdir/file1.txt diffdir2/file1.txt
+--- diffdir/file1.txt	2017-02-16 13:48:32.973042206 +0100
++++ diffdir2/file1.txt	2017-02-16 13:52:29.555164788 +0100
+@@ -1,2 +1,2 @@
+-Test line 1
+-Test line 2
++Test line 1 Change in line 1 diffDir2
++Test line 2 Change in line 2 diffDir2
+diff -ruN diffdir/file2.txt diffdir2/file2.txt
+--- diffdir/file2.txt	2017-02-16 13:48:52.472887460 +0100
++++ diffdir2/file2.txt	2017-02-16 13:53:44.662568786 +0100
+@@ -1,2 +1,2 @@
+ Test line 1
+-Test line 2
++Test line 2 Line 2 adjusted in diffdir 2

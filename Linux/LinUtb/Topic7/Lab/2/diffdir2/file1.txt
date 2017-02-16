@@ -1,0 +1,2 @@
+Test line 1 Change in line 1 diffDir2
+Test line 2 Change in line 2 diffDir2

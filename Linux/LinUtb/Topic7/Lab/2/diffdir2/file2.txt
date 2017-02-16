@@ -1,0 +1,2 @@
+Test line 1
+Test line 2 Line 2 adjusted in diffdir 2
