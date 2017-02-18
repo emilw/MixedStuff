@@ -77,8 +77,8 @@ Här sker länkningen till ett körbart program.
 
 test_main.c(mitt testprogram) länkas till:
 - lresistance => söker på *lib* resistance *.so*
-- Wl gör det möjligt för oss att skicka in commandon i länkningen, exempelvis rpath=. underlättar så att man även vid körning av programmet kan peka ut vart libresistance.so finns. Detta eftersom man ibland inte kan lita på att default mapparna(PATH variabeln) i ett system stämmer med det man förväntar sig. 
-- L. Pekar ut sökvägen var libresistance.so hittas under länkningen
+- Wl gör det möjligt för oss att skicka in commandon i länkningen, exempelvis rpath=. underlättar så att man även vid körning av programmet kan peka ut vart libresistance.so finns. Detta eftersom man ibland inte kan lita på att default mapparna(PATH variabeln) i ett system stämmer med det man förväntar sig. För utvecklings ändamål när man vill testa av sitt bilbiotek är det utmärkt. I mitt fall så vill jag köra på min lokala kopia av biblioteket.
+- L. Pekar ut sökvägen var libresistance.so hittas under länkningen. I mitt fall vill jag att den länkar mot samma mapp, alltså ".".
 
 ##### Bygga rutin
 För att bygga resistance.so:
@@ -118,7 +118,7 @@ if(testResult != TRUE){
 ```
 
 ## Del 2
-Det nedan är en kopia från vår gemensamma dokumentation här: https://github.com/linUM141/Labb6/blob/master/README.md
+Det nedan är en kopia från vår gemensamma dokumentation här: [https://github.com/linUM141/Labb6/blob/master/README.md](https://github.com/linUM141/Labb6/blob/master/README.md)
 
 Projekt teamet var:
 - Daniel Hammarberg
@@ -234,17 +234,25 @@ make uninstall
 
 ## Del 3
 Sammarbetet har gått bra, vi valde nästan direkt att köra på ett Github konto i och med att vi alla hade användare där.
-Github har även många tillhörande applikationer, så som Gitter, det är en chat klient liknande IRC vilket funkar smidigt i kontexten av ett repository.
-Github har även möjlighet att köra Continous Integration/Bygg servrar på ett smidigt sätt som underlättar att hålla branchen stabil när flera jobbar parallellt.
-Det blir även otroligt viktig att man har automatiserade tester, alltså inte bara byggen.
+Github har även många integrerade applikationer, så som Gitter som är en chat klient och Travis som är en bygg server.
+För att säkerställa att vi alla ser samma sak och att ingen plockar in saker som inte fungerar så var det viktigt för oss,
+att vi hade automatiserade byggen och tester.
 
 Genom att dela upp de olika bilblioteken så fick vi en tydlig uppdelning på vad var och en skulle utföra vilket gjorde att vi kunde jobbar var för sig.
 De delar som vi fick problem med och som vi behövde diskutera var hur vi testade respektive bibliotek.
 Jag valde att köra:
 make test
 och efter lite diskussion så hängde de andra med på det, det är något vi skulle bestämt från början för att få det lite smidigare.
+Vi skulle också ha tagit ett redan existerande unit testing ramverk men det kändes som lite "overkill", dock så tycker jag att det
+blev lite rörigt för vi löste testerna på lite olika sätt.
+
+För mig var nyckeln till framgång:
+- Bygg server
+- Att alla funktioner har täckning av automatiserade tester
+- Om projektet växer behövs även integrations tester, i det här fallet så skulle electrotest applikationen behöva testas av bättre.
+- Gitter fungerade bra för chattar, men vi skulle nog ha behövt Skype for business eller linkande där vi kan dela skärm och ha tel möten om projektet växte.
 
 Allt är publikt, och nås via länkarna nedan:
-- Github projektet: [https://github.com/linUM141/Labb6](https://github.com/linUM141/Labb6)
+- Github projektet/repository: [https://github.com/linUM141/Labb6](https://github.com/linUM141/Labb6)
 - CI/Bygg server: [https://travis-ci.org/linUM141/Labb6/builds](https://travis-ci.org/linUM141/Labb6/builds)
 - Chat forum: [https://gitter.im/linUM141/Lobby](https://gitter.im/linUM141/Lobby)
