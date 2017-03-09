@@ -84,6 +84,9 @@ $42 = 45
 Det verkar som att den första arrayen skriver till första positionen i den andra arrayen, felet är att buffert1 addresserat över 15, alltså till 16.
 buffert1[16] är alltså samma som buffert2[0].
 
+*Istället för att ha lagt in en break point till så hade jag kunnat nyttja ```step``` eller ```next``` för att gå igenom koden och in genom funktionerna rad för rad. I ett större projekt så hade det varit svårare att placera ut brytpunkterna så direkt som i detta fall.*
+
+
 ### 3 Vad som var fel i programmet
 #### 1. 45 + 5 == 50
 Fel array användes i utskriften, ändringen jag gjorde var:
@@ -106,4 +109,13 @@ I och med att den första arrayen var för liten och allokerade en position i de
 
 ```
 ## Del B(Trace)
-sdsd
+Testerna kördens med errorprog_32.
+### Vilken fil saknas?
+Filen som saknas är data.txt
+### Vilken exitkod returneras?
+Programmet returnerar exit kod 3.
+### Vilken file descriptor får den efter att fil lagts in?
+open på data.txt ger file descriptor 3.
+Utskriften på skärmen sker via file descriptor 1(Standard output) i write
+### Vilken exitkod returneras efter efter att en fil har lagts in?
+Programmet returnerar exit kod 3.
