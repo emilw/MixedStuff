@@ -1,5 +1,3 @@
-Emil Westholm 820811-7153
-
 # Övning 10
 
 Jag ämnar bara att svara på Del 1.
