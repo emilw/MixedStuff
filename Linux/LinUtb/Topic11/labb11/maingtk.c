@@ -166,6 +166,12 @@ static void setNumberOfComponents(char* value){
     initResistanceListSection(getNumberOfComponents(), oldNumberOfComponents, &_resistanceValueList, _mainGrid, resistanceListItemChanged);
 }
 
+/**
+* @brief Gets the resistance items as a float array
+*
+* Get the current array of resistance values as float. This function converts to float on the fly from a char pointer array.
+* @return float*
+**/
 static float* getResistanceItems(){
     float* resistance = malloc(getNumberOfComponents()*sizeof(float));
     int i = 0;
@@ -177,11 +183,23 @@ static float* getResistanceItems(){
     return resistance;
 }
 
+/**
+* @brief Event method that is fired when voltage is changed
+*
+* Event method that fires when voltage input textbox is changed. It updates the model data with the setVoltage method.
+* @return void
+**/
 static void voltageChanged (GtkEditable *editable,
                gpointer     user_data) {
     setVoltage(gtk_editable_get_chars(editable, 0,-1));
 }
 
+/**
+* @brief Event method that is fired when connection type is changed
+*
+* Event method that fires when connection type checkbox is changed. It updates the model data with the setConnectionType method.
+* @return void
+**/
 static void connectionTypeChanged (GtkCheckButton* checkButton,
                gpointer     user_data) {
     gboolean isChecked = gtk_toggle_button_get_active (checkButton);
@@ -193,11 +211,23 @@ static void connectionTypeChanged (GtkCheckButton* checkButton,
     }
 }
 
+/**
+* @brief Event method that is fired when number of components are changed
+*
+* Event method that fires when the number of component drop down list is changed. It updates the model data with the setNumberOfComponents method.
+* @return void
+**/
 static void numberOfComponentsChanged (GtkComboBox* comboBox,
                gpointer     user_data) {
     setNumberOfComponents(gtk_combo_box_text_get_active_text (comboBox));
 }
 
+/**
+* @brief Event method that is fired when window is closed
+*
+* Event method that fires when the window is closed. It returns FALSE if it should move on to run destroy, e.g. close the application.
+* @return void
+**/
 static gboolean delete_event(GtkWidget *widget,
                                 GdkEvent *event,
                                 gpointer data)
@@ -206,13 +236,26 @@ static gboolean delete_event(GtkWidget *widget,
     return FALSE;
 }
 
+
+/**
+* @brief Event method that is fired when the application is being closed
+*
+* Event method that fires when the application is about to be closed.
+* @return void
+**/
 static void destroy(GtkWidget *widget,
                     gpointer data)
 {
     gtk_main_quit();
 }
 
-static void button_clicked(){
+/**
+* @brief Event method that is fired when it's time to calculate the output of the input
+*
+* Event method that fires when the button is clicked. This calculates the result of the electrolib functionality.
+* @return void
+**/
+static void calculateAndPresentOutput(){
     int RESISTANCEOUTPUTLABELROW = 6;
     int VOLTAGEOUTPUTLABELROW = 7;
     int E12OUTPUTLABELROW = 8;
@@ -231,6 +274,13 @@ static void button_clicked(){
     addOutputLabel(_mainGrid, formatedMessage, 1, E12OUTPUTLABELROW, 2);
 }
 
+
+/**
+* @brief Starts the whole application and calls the electrolibui to present the UI in GTK
+*
+* Starts the whole application and calls the electrolibui to present the UI in GTK
+* @return void
+**/
 int main(int argc, char *argv[]){
     GtkWidget *calcButton;
     GtkWidget *closeButton;
@@ -244,7 +294,7 @@ int main(int argc, char *argv[]){
     
     addOutputLabel(_mainGrid, "Komponenter och spänning: ", 2, 1, 1);
     initResistanceListSection(getNumberOfComponents(),0, &_resistanceValueList, _mainGrid, resistanceListItemChanged);
-    addButton("Beräkna!", _mainGrid, button_clicked, 1, 5, 2);
+    addButton("Beräkna!", _mainGrid, calculateAndPresentOutput, 1, 5, 2);
     addButton("Avsluta", _mainGrid, destroy, 1, 9, 2);
 
     gtk_main();
