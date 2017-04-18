@@ -1,7 +1,7 @@
 # Övning 12
 
 ## Inledning
-Uppgiften var att ta det grafiska gränssnittet som byggdes i uppgift 11 med vissa justeringar och få det att fungera i Eclipse som är ett fullständigt IDE(Integrated Development Environment) för C/C++ utveckling. Utmaningen här är att få make strukturen som var helt manuellt skapad i tidigare uppgifter utförd och parametersatt i Eclipse. Fördelen med ett IDE är att det hanterar alla stegen i en utvecklingsprocess så som:
+Uppgiften var att ta koden till det grafiska gränssnittet som byggdes i uppgift 11 och få det att fungera i Eclipse med vissa justeringar. Eclipse är ett fullständigt IDE(Integrated Development Environment) för C/C++ utveckling. Utmaningen här är att få make strukturen som var helt manuellt skapad med en makefil i tidigare uppgift utförd och parametersatt i Eclipse. Fördelen med ett IDE är att det hanterar alla stegen i en utvecklingsprocess så som:
 - Skriva kod
 - Debugga kod
 - Bygga koden
@@ -17,7 +17,7 @@ Utmaningar:
 Nedan beskrivs de olika stegen för att få igång programmet i Eclipse.
 
 ### Skapa ett arkiv av electro biblioteken för användning i Eclipse
-Nedan bör läggas till i make filen för labb 11 för att snabbt kunna deploya ut en ny version av utvecklingsarkivet, jag har kört stegen nedan manuellt vid varje biblioteksändring.
+Nedan bör läggas till i make filen för labb 6(electrolib labben) för att snabbt kunna deploya ut en ny version av utvecklingsarkivet, jag har kört stegen nedan manuellt vid varje biblioteksändring.
 Följande körs under lab6 mappen/foldern:
 
 ```bash
@@ -61,7 +61,7 @@ Ej möjligt att kompilera eller länka efter detta i och med att GTK+3 referense
 
 Efter detta steg så kan allt som rör GTK kompileras. Det går fortfarande inte att köra programmet i och med att linum(electrolib) inte har pekats ut i projektet.
 
-### Linum(Electrolib)
+#### Linum(Electrolib)
 I ett tidgare steg skapades linum.a, den ska nu inkluderas för att kunna få ett fullt körbart program så som det fungerade i labb 11.
 - Lägg in header sökvägen för linum till ```/usr/include/linum```, se sektionen som skapar Linum.a
 - Lägg in att länkningen ska leta efter ```linum```(Här specas inte lib* eller *.a)
@@ -69,7 +69,7 @@ I ett tidgare steg skapades linum.a, den ska nu inkluderas för att kunna få et
 Efter det här steget så kan hela projektet kompileras och köras. Nu är man där man var i slutet av labb 11 fast att man kör den via Eclipse.
 
 ### Lägg in test koden
-Packa upp testkod från labb siten och flytta in den i src mappen i Eclipse projektet.
+Packa upp testkod från labb sidan och flytta in den i src mappen i Eclipse projektet.
 
 Projektet bygger inte här pga. calculate_resistance står som calculate_resistans. Här bytte jag ut alla calculate_resistans mot calculate_resistance, det såg jag som det renaste istället för att ha ett macro som ändrar namnen för att passa testerna.
 
@@ -152,7 +152,7 @@ Buggarna var av två slag:
 Nedan är de resultat som framkom under utförandet av uppgiften.
 
 ### Godkänt test hela tiden
-Varje gång testen kördes skrevs det ut att det var godkänt hela tiden, justering gjordes så att resultatet från testet togs med för att besluta om texten för godkänt test skulle skrivas ut eller ej.
+Varje gång testen kördes skrevs det ut att det var godkänt hela tiden även fast test falierade, justering gjordes så att resultatet från testet togs med för att besluta om texten för godkänt test skulle skrivas ut eller ej.
 
 *Ändringen skedde enligt nedan:*
 ```diff
@@ -171,7 +171,7 @@ Varje gång testen kördes skrevs det ut att det var godkänt hela tiden, juster
 ```
 
 ### Fel resultat kontrollerat för E12 komponent
-Fel i bibliotekskontrollen där man skulle räkna på vila E12 komponenter som skulle användas. Här räckte det med en enligt biblioteket, men test verifieringen ville ha två vilket inte stämmer som jag ser det.
+Fel i bibliotekskontrollen där man skulle räkna på vilka E12 komponenter som skulle användas. Här räckte det med en enligt biblioteket, men test verifieringen ville ha två vilket inte stämmer som jag ser det.
 
 *Ändringen skedde enligt nedan:*
 ```diff
@@ -182,15 +182,15 @@ Fel i bibliotekskontrollen där man skulle räkna på vila E12 komponenter som s
 ```
 
 ### Fel i biblioteken
-I vissa fall så såg jag i våra bibliotek libcompnent och libpower att vi returnerade -1 i vissa fall. Men så vitt jag kan se så är det bara för libresistance vi ska returnera -1 vid "orimlig" input. Testerna gav fel på vissa lägen där vi skickade in 0 etc. eller negativa belopp.
+I vissa fall så såg jag i våra bibliotek libcompnent och libpower att vi returnerade -1 i vissa fall. Men så vitt jag kan se så är det bara för libresistance vi ska returnera -1 vid "orimlig" input enligt instruktionen i lab 6. Testerna gav därför fel på vissa lägen där vi skickade in 0 etc. eller negativa belopp, då returnerade biblioteket -1.
 
 Jag justerade det direkt i biblioteken så att de skulle möta testerna eftersom testerna ändock verkade rimliga och att instruktionen i lab 6 inte följts map. returkoder.
 
 Att hitta de buggarna krävde dock inte att jag behövde kompilera om med debug symboler eftersom de var relativt enkla att hitta.
 
-Vi hade också en globalvariabel i libpower som störde kompileringen, den fick jag ändra till static eftersom den bara var intressant i den libpower.
+Vi hade också en globalvariabel i libpower som störde kompileringen, den fick jag ändra till static eftersom den bara var intressant i libpower.
 
-### Total diff/ändringar(testfilen)
+### All ändringar i testfilen(linumtest.c)
 
 ```diff
 10,12c10,12
@@ -248,11 +248,11 @@ Vi hade också en globalvariabel i libpower som störde kompileringen, den fick 
 ```
 
 ## Diskussion
-Resultatet från min sida är att det gick att få det att fungera. Några snesteg med våra enga bibliotek hittades som jag skrev on under bugsektionen i Resultat delen. men överlag så tycker jag det har gått bra. Det som man kan nämna är att felen man får i Eclipse när man har ett misstag som i fallet där vi hade en globalvariabel som länkades in flera gånger är att det är lurigt att fastställa exakt vem som tar in vad och vart dubletten är. Ibland kan jag tycka att det blir lite rörigt att Eclipse genererar en egen makefil men som är "read only"...men fördelarna med IDE:t överväger ju såklart. 
+Resultatet från min sida är att det gick att få det att fungera. Några snesteg med våra enga bibliotek hittades som jag skrev om under bugsektionen i Resultat delen, men överlag så tycker jag det har gått bra. Det som man kan nämna är att felen man får i Eclipse när man har ett misstag som i fallet där vi hade en globalvariabel som länkades in flera gånger är att det är lurigt att fastställa exakt vem som tar in vad och vart dubletten är. Ibland kan jag tycka att det blir lite rörigt att Eclipse genererar en egen makefil men som är "read only"...men fördelarna med IDE:t överväger ju såklart. 
 
 ## Slutord
-Intressant labb, jag använde Eclipse för 13 år sedan men då var det Java vi körde. Tycker att det överlag funkade bra som sagt, tror att jag har en del fördel av att ha kört Visual Studio sedan tidigare vilket gör det enklare att förstå hur delarna hänger ihop.
-Labb 11 hade gått mycket fortare om man fått göra den direkt i Eclipse, framförallt eftersom man kan få autocompleters för metoderna i GTK3. Nu har jag suttit med browsern uppe för att gå igenom deras API referenser för att veta vad jag ska skicka in, blir lite moständigt :-(.
+Intressant labb, jag använde Eclipse för 13 år sedan på en universitetskurs i Java. Tycker att det överlag funkade bra som sagt, tror att jag har en del fördel av att ha kört Visual Studio sedan tidigare vilket gör det enklare att förstå hur delarna hänger ihop.
+Labb 11 hade gått mycket fortare om man fått göra den direkt i Eclipse, framförallt eftersom man kan få autocompleters för metoderna i GTK3. I labb 11 satt jag med browsern uppe för att gå igenom deras API referenser för att veta vad jag ska skicka in, blir lite omständigt.
 
 ## Referenser
 
