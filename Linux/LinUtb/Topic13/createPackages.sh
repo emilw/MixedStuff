@@ -3,38 +3,67 @@ function quit {
     exit
 }
 
+function print {
+    echo -e "Package status text: \e[32m"$@"\e[39m"
+}
+
+function printFailure {
+    echo -e "Package status text: \e[31m"$@"\e[39m"
+}
+
+failureCount=0
+
+function equalToZeroOtherwiseFailure {
+    local input=$1
+    local failureText
+    local firstPosition=0
+    for p in "$@";
+    do
+        if [ $firstPosition -eq 0 ] ; then
+            firstPosition=1
+        else
+            failureText=$failureText"$p";
+        fi        
+    done
+
+    if [[ "$intput" -ne 0 ]]; then
+        printFailure "$failureText status($input)"
+        failureCount=$failureCount+1
+    fi
+}
+
 function createDebStructureIfNotExists {
     local fullFolderName=$1
     local releaseVersion=$2
     local releaseName=$3
 
     if [ ! -d "output/$fullFolderName" ]; then
-        echo "Missing output folder for $fullFolderName, creating it"
+        print "Missing output folder for $fullFolderName, creating it"
         mkdir output/$fullFolderName
-        echo "Create debian package folder"
+        print "Create debian package folder"
         mkdir output/$fullFolderName/debian
 
         cd output/$fullFolderName
         pwd
-        echo "Creating history file"
+        print "Creating history file"
         dch --create -v $releaseVersion-1 --package $releaseName
-        echo "Creating compat file"
+        print "Creating compat file"
         echo 9 > debian/compat
-        echo "Creating copyright file"
+        print "Creating copyright file"
         touch debian/copyright
         cd ../../
-        echo "Creating control file"
+        print "Creating control file"
         cp $releaseName"Control.conf" output/$fullFolderName/debian/control
 
-        echo "Creating rules file"
+        print "Creating rules file"
         cp $releaseName"rules.conf" output/$fullFolderName/debian/rules
 
-        echo "Copying hithere.dirs"
+        print "Copying $releaseName.dirs"
         cp $releaseName.dirs output/$fullFolderName/debian/$releaseName.dirs
 
-        echo "Creating source format file"
+        print "Creating source format file"
         mkdir output/$fullFolderName/debian/source
-        #echo "3.0 (quilt)" > output/$fullFolderName/debian/source/format
+        #print "3.0 (quilt)" > output/$fullFolderName/debian/source/format
         echo "3.0 (native)" > output/$fullFolderName/debian/source/format
         ls -l output/$fullFolderName/debian/
     fi
@@ -43,57 +72,77 @@ function createDebStructureIfNotExists {
 function buildPackage() {
     local fullFolderName=$1
     cd output/$fullFolderName
-    echo "Building deb package for $fullFolderName"
+    print "Building deb package for $fullFolderName"
     debuild -us -uc
-    echo "Done building package for $fullFolderName"
+    equalToZeroOtherwiseFailure $? "Failed to build $fullFolderName"
+    print "Done building package for $fullFolderName"
     cd ../../
 }
 
 libVersion="1.0"
 programVersion="1.0"
+programGtkVersion="1.0"
 libReleaseName="electrolib"
 programReleaseName="electrotest"
+programGtkReleaseName="electrotestgtk"
 
-echo "Removing output folder and files"
+print "Removing output folder and files"
 rm -r output/
 
 if [ ! -d "output" ]; then
-    echo "Missing output folder, creating it"
+    print "Missing output folder, creating it"
     mkdir output
 fi
 
 libTarFullName=$libReleaseName"_"$libVersion
 programTarFullName=$programReleaseName"_"$programVersion
+programGtkTarFullName=$programGtkReleaseName"_"$programGtkVersion
 
-echo "Renaming tarball to deb format"
+print "Renaming tarball to deb format"
 cp latestLibs.tar.gz output/$libTarFullName.orig.tar.gz
 #Copy program
 cp latestElectroTest.tar.gz output/$programTarFullName.orig.tar.gz
-echo "Tarballs are in place"
+cp latestElectroTestGtk.tar.gz output/$programGtkTarFullName.orig.tar.gz
+print "Tarballs are in place"
 
 libFolderFullName=$libReleaseName-$libVersion
 programFolderFullName=$programReleaseName-$programVersion
+programGtkFolderFullName=$programGtkReleaseName-$programGtkVersion
 
 createDebStructureIfNotExists $programFolderFullName $programVersion $programReleaseName
+createDebStructureIfNotExists $programGtkFolderFullName $programGtkVersion $programGtkReleaseName
 createDebStructureIfNotExists $libFolderFullName $libVersion $libReleaseName
 
 
-echo "Extract tar ball $libTarFullName to output $libFolderFullName"
+print "Extract tar ball $libTarFullName to output $libFolderFullName"
 tar xf output/$libTarFullName.orig.tar.gz  -C output/$libFolderFullName --strip-components 3
-echo "Extract tar ball $programTarFullName to output $programFolderFullName"
+print "Extract tar ball $programTarFullName to output $programFolderFullName"
 tar xf output/$programTarFullName.orig.tar.gz  -C output/$programFolderFullName --strip-components 2
+print "Extract tar ball $programGtkTarFullName to output $programGtkFolderFullName"
+tar xf output/$programGtkTarFullName.orig.tar.gz  -C output/$programGtkFolderFullName --strip-components 2
 
-echo "Building electro lib"
+
+print "Building electro lib"
 buildPackage $libFolderFullName
 
-echo "Installing electro lib to make sure that electrotest can build"
+print "Installing electro lib to make sure that electrotest can build"
 sudo dpkg -i "output/"$libTarFullName"-1_i386.deb"
 
-echo "Starting to build electro test"
+equalToZeroOtherwiseFailure $? "Failed to install $libTarFullName"
+
+print "Starting to build electro test"
 buildPackage $programFolderFullName
 
+print "Starting to build electro test"
+buildPackage $programGtkFolderFullName
 
-echo "Uninstalling electrolib"
-sudo dpkg -r electrolib
 
+print "Uninstalling electrolib"
+sudo dpkg -r $libReleaseName
+
+equalToZeroOtherwiseFailure $? "Failed to uninstall $libReleaseName"
+
+equalToZeroOtherwiseFailure $failureCount "A set of steps failed($failureCount)"
+
+print "Done running debian package generator for electrolib"
 quit
