@@ -1,5 +1,6 @@
 #!/bin/bash
 function quit {
+    print "Done running debian package generator for electrolib/electrotest/electrogtk"
     exit
 }
 
@@ -25,10 +26,13 @@ function equalToZeroOtherwiseFailure {
             failureText=$failureText"$p";
         fi        
     done
+    echo $1
 
-    if [[ "$intput" -ne 0 ]]; then
+    if [ "$1" -gt "0" ] ; then
         printFailure "$failureText status($input)"
         failureCount=$failureCount+1
+        printFailure "A set of steps failed($failureCount)"
+        exit
     fi
 }
 
@@ -63,8 +67,8 @@ function createDebStructureIfNotExists {
 
         print "Creating source format file"
         mkdir output/$fullFolderName/debian/source
-        #print "3.0 (quilt)" > output/$fullFolderName/debian/source/format
-        echo "3.0 (native)" > output/$fullFolderName/debian/source/format
+        echo "3.0 (quilt)" > output/$fullFolderName/debian/source/format
+        #echo "3.0 (native)" > output/$fullFolderName/debian/source/format
         ls -l output/$fullFolderName/debian/
     fi
 }
@@ -72,6 +76,8 @@ function createDebStructureIfNotExists {
 function buildPackage() {
     local fullFolderName=$1
     cd output/$fullFolderName
+    print "Commit all changes"
+    dpkg-source --commit
     print "Building deb package for $fullFolderName"
     debuild -us -uc
     equalToZeroOtherwiseFailure $? "Failed to build $fullFolderName"
@@ -79,9 +85,14 @@ function buildPackage() {
     cd ../../
 }
 
-libVersion="1.0"
-programVersion="1.0"
-programGtkVersion="1.0"
+#Init environment
+DEBEMAIL="emil@postback.se"
+DEBFULLNAME="Emil"
+export DEBEMAIL DEBFULLNAME
+
+libVersion="1.1"
+programVersion="1.1"
+programGtkVersion="1.1"
 libReleaseName="electrolib"
 programReleaseName="electrotest"
 programGtkReleaseName="electrotestgtk"
@@ -142,7 +153,4 @@ sudo dpkg -r $libReleaseName
 
 equalToZeroOtherwiseFailure $? "Failed to uninstall $libReleaseName"
 
-equalToZeroOtherwiseFailure $failureCount "A set of steps failed($failureCount)"
-
-print "Done running debian package generator for electrolib"
 quit

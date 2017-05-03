@@ -65,7 +65,7 @@ dch --create -v 1.0-1 --package electrolib
 ```
 
 #### Byggregler(rules)
-Senare kommer vi köra ett kommando som heter ```debuild``` som kommer generera det slutgiltiga paketet. ```debuild``` kör bland annat:
+Senare kommer vi köra ett kommando som heter ```debuild``` som kommer generera det slutgiltiga paketet. ```debuild``` kör bygget av källkoden, det betyder att den anropar följande i ursprungs repositoryt:
 - ```make```
 - ```make install```
 
@@ -97,18 +97,21 @@ lib:
 #### "Kontroll filen"(control)
 Kontrollfilen är själva definitionen av debian paketet, här anges information om exempelvis förkrav, versionsnamn, namn etc. Enklast är att visa filens innehåll:
 ```
-Source: electrolib
+Source: electrotest
 Maintainer: Emil Westholm <emil@postback.se>
 Section: misc
 Priority: optional
 Standards-Version: 1.0
-Build-Depends: debhelper (>= 9)
+Build-Depends: electrolib
 
-Package: electrolib
+Package: electrotest
 Architecture: any
-Depends: ${shlibs:Depends}, ${misc:Depends}
-Description: This is the libraries that powers the famous electrotest application.
+Depends: electrolib
+Description: This is the electrotest application that simplifies calculation of resistance components.
 ```
+
+Ovan visas filen för electrotest, här ser vi exempelvis att den har förkrav på electrolib, alltså att den finns installerad både när paketet skapas och när det ska installeras.
+
 #### Copyeright(copyright)
 Den här filen innehåller information och copyright, alltså vilka rättigheter som följer med programvaran.
 Jag har lämnat denna tom för denna uppgiften.
