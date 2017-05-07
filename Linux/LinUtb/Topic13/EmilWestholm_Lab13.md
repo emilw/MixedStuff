@@ -1,7 +1,8 @@
 # Övning 13
 
 ## Introduktion
-Så som jag har förstått det så kan man skapa ett debianpaket på två olika sätt, antingen med bara binärerna som man kopierar i debian strukturen eller hela vägen från ett källkodsrepository där man sätter upp ett flöde från kod till färdigt paket.
+Så som jag har förstått det så kan man skapa ett debianpaket på två olika sätt, antingen med bara binärerna som man kopierar i debian strukturen eller hela vägen från ett källkodsrepository där man sätter upp ett flöde från kod till färdigt paket. Det sistnämnda är ett krav för att få finnas i Debians officiella repository, alltså att källkoden finns tillgänglig för alla paket som finns där.
+
 Jag har här försökt beskriva det sistnämnda, alltså:
 
 - Repository med källkod
@@ -168,14 +169,6 @@ sudo dpkg -r "electrolib"
 
 ## Linitian
 I slutet av debuild körs Linitan, det är ett verktyg för att testa att paketet är korrekt. Där kontrolleras att man fyllt på paketet enlit föreskrifterna från Debian. I mitt fall så har jag brytit mot några regler beträffande versionsnamnssättning och har några små varningar. Dessa ska såklart åtgärdas om paketet ska distruberas via apt-get eller liknande.
-
-## Testa paketet
-I skriptet ./createPackage så körs ett test av paketen i slutet.
-Följande exekveras för att säkerställa att allt fungerar som det ska:
-
-```bash
-
-```
 
 ## Notis om bilagt tar arkiv
 Eftersom jag inte ville lägga med allt från Labb6 och Labb11 så har jag lagt med dem som tar arkiv, det betyder att createTarWithTheLatest.sh inte går att köra utan att man har Labb6 och Labb11 på plats samt justerade makefiler med justeringar.
