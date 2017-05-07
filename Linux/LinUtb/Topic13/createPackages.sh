@@ -57,13 +57,13 @@ function createDebStructureIfNotExists {
         touch debian/copyright
         cd ../../
         print "Creating control file"
-        cp $releaseName"Control.conf" output/$fullFolderName/debian/control
+        cp "Templates/"$releaseName"Control.conf" output/$fullFolderName/debian/control
 
         print "Creating rules file"
-        cp $releaseName"rules.conf" output/$fullFolderName/debian/rules
+        cp "Templates/"$releaseName"rules.conf" output/$fullFolderName/debian/rules
 
         print "Copying $releaseName.dirs"
-        cp $releaseName.dirs output/$fullFolderName/debian/$releaseName.dirs
+        cp "Templates/"$releaseName.dirs output/$fullFolderName/debian/$releaseName.dirs
 
         print "Creating source format file"
         mkdir output/$fullFolderName/debian/source
@@ -124,14 +124,12 @@ createDebStructureIfNotExists $programFolderFullName $programVersion $programRel
 createDebStructureIfNotExists $programGtkFolderFullName $programGtkVersion $programGtkReleaseName
 createDebStructureIfNotExists $libFolderFullName $libVersion $libReleaseName
 
-
 print "Extract tar ball $libTarFullName to output $libFolderFullName"
-tar xf output/$libTarFullName.orig.tar.gz  -C output/$libFolderFullName --strip-components 3
+tar xf output/$libTarFullName.orig.tar.gz -C output/$libFolderFullName --strip-components 3
 print "Extract tar ball $programTarFullName to output $programFolderFullName"
-tar xf output/$programTarFullName.orig.tar.gz  -C output/$programFolderFullName --strip-components 2
+tar xf output/$programTarFullName.orig.tar.gz -C output/$programFolderFullName --strip-components 2
 print "Extract tar ball $programGtkTarFullName to output $programGtkFolderFullName"
-tar xf output/$programGtkTarFullName.orig.tar.gz  -C output/$programGtkFolderFullName --strip-components 2
-
+tar xf output/$programGtkTarFullName.orig.tar.gz -C output/$programGtkFolderFullName --strip-components 2
 
 print "Building electro lib"
 buildPackage $libFolderFullName
