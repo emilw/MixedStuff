@@ -122,7 +122,22 @@ Jag har lämnat denna tom för denna uppgiften.
 compat filen innehåller versionen av debhelper, alltså det toolset man nyttjat för att generera paketet. Den är satt till version 9 i mitt paket.
 
 #### Paketformat(source/format)
-Beskriver vilket paket format som används. Här har jag använt ```3.0 (quilt)``` som är det rekommenderade valet när man ska skapa en källa hela vägen från källkod till paket. Det andra alternativet är ```3.0 (native)```, det är som jag förstår det mer för att paketera ett rent paket utan stöd för källkodshantering och patchar.
+Beskriver vilket paket format som används. Här har jag använt ```3.0 (quilt)``` som är det rekommenderade valet när man ska skapa en källa hela vägen från källkod till paket. Det andra alternativet är ```3.0 (native)```, det är som jag förstår det mer för att paketera ett rent paket utan stöd för källkodshantering/versioner/patchar.
+
+#### Mappskapar instruktion(dirs fil)
+I ```make install``` så pekas /usr/lib eller /usr/bin ut. Dessa mappar måste skapas under debian strukturen, detta görs enklast genom att lägga in en fil som heter:
+
+*package.dirs*
+
+Innehållet i electrolib.dirs visas nedan:
+```bash
+usr/lib
+```
+Detta gör alltså att följande path skapas under debian strukturen när debuild körs:
+
+```electrolib/usr/lib```
+
+Vilket säkerställer att ```make install``` har en destination att lägga filerna i.
 
 ### Fyll på debian paket strukturen med källan
 Nästa steg är att fylla på den strukturen som skapats tidigare. Det görs genom att extrahera tar filen till paketestrukturen, se nedan:
@@ -131,7 +146,7 @@ tar xf output/electrolib.orig.tar.gz  -C output/electrolib --strip-components 3
 ```
 *I skriptet ovan används också ```--strip-components``` detta för att inte ta med filstrukturen som nyttjades när tar arkivet skapades.*
 
-### Skapa en ny version
+### Skapa en ny version/ändring/patch
 I och med att vi kör Quilt och inte Native, så hanteras ändringarna av paketet som patchar. För att vi ska få in våra ändringar så måste vi committa ändringen, det görs via:
 
 ```bash
@@ -145,7 +160,7 @@ Det sker med:
 ```bash
 debuild -us -uc
 ```
-*-us och -uc säger att vi inte vill signera källpaketet eller .changes filen.*
+*-us och -uc säger att vi inte vill signera källpaketet eller .changes filen. Detta bör givetvis göras om man gör ett publikt paket för att garantera att vi/jag är avsändaren och att ingen har "pillat" på innehållet.*
 
 Här sker primärt tre saker:
 - ```make``` för att bygga källkoden
@@ -168,6 +183,9 @@ buildPackage "electrotestgtk"
 #Uninstall electrolib
 sudo dpkg -r "electrolib"
 ```
+
+### Deb filerna
+Deb filerna genereras i bygg steget som beskrivs ovan. De tre Deb filerna genereras under output mappen.
 
 ## Linitian
 I slutet av debuild körs Linitan, det är ett verktyg för att testa att paketet är korrekt. Där kontrolleras att man fyllt på paketet enlit föreskrifterna från Debian. I mitt fall så har jag brytit mot några regler beträffande versionsnamnssättning och har några små varningar. Dessa ska såklart åtgärdas om paketet ska distruberas via apt-get eller liknande.
