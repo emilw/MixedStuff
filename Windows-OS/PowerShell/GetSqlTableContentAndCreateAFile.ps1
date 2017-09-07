@@ -49,8 +49,8 @@ if($numberOfRows -gt 0){
     Write-Host "Creating files";
 
     foreach($row in $sqlDataSet.Tables[0].Rows){
-        $fileName = $row[$columnNameName];
-        $fileContent = $row[$columnNameContent];
+        $fileName = $row[0];
+        $fileContent = $row[1];
 
         $fullFilePath = $fullFolderPath + "\" + $fileName + "." + $fileExtension;
 
