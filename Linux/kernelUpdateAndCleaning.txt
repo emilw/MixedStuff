@@ -1,0 +1,6 @@
+//Check your version of kernel
+uname -a
+//List all installed kernel versions
+dpkg --list | grep linux-image
+//Remove the once that are not in used
+sudo apt-get purge linux-image-extra-3.19.0.74-generic

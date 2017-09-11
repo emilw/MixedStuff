@@ -1,0 +1,52 @@
+10,12c10,12
+< #include <libpower.h>
+< #include <libresistance.h>
+< #include <libcomponent.h>
+---
+> #include <power.h>
+> #include <resistance.h>
+> #include <component.h>
+18,20c18,20
+< //#ifndef calc_resistance
+< //#define calc_resistance calc_resistans
+< //#endif
+---
+> #ifndef calc_resistance
+> #define calc_resistance calc_resistans
+> #endif
+60c60
+< 	float fSum = calc_resistance(iLen,S_CHAR,pf);
+---
+> 	float fSum = calc_resistans(iLen,S_CHAR,pf);
+107c107
+< 	bRet &=(iLen==1);								// Checks that result is E12.
+---
+> 	bRet &=(iLen==2);								// Checks that result is E12.
+149c149
+< 		float f=calc_resistance( 1, S_CHAR, &af[0]);
+---
+> 		float f=calc_resistans( 1, S_CHAR, &af[0]);
+154c154
+< 		float f=calc_resistance(1, P_CHAR, &af[0]);
+---
+> 		float f=calc_resistans(1, P_CHAR, &af[0]);
+159c159
+< 		float f=calc_resistance(3,P_CHAR,&af[0]);
+---
+> 		float f=calc_resistans(3,P_CHAR,&af[0]);
+164c164
+< 		float f=calc_resistance( 2, P_CHAR, &af[0]);
+---
+> 		float f=calc_resistans( 2, P_CHAR, &af[0]);
+186c186
+< 	if(bShowText && bRet)
+---
+> 	if(bShowText)
+192c192
+< 	if(bShowText && bRet)
+---
+> 	if(bShowText)
+198c198
+< 	if(bShowText && bRet)
+---
+> 	if(bShowText)

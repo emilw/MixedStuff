@@ -32,7 +32,11 @@
                     "type": "string"
                 },
                 "AccrualCodeString": {
-                    "$ref": "#/definitions/IntegrationCodingDimensionsDto",
+                    "oneOf": [
+		                {
+			                "$ref": "#/definitions/IntegrationCodingDimensionsDto"
+		                }
+	                ],
 					"xml":{
 						"name":"AccrualCodeString"
 					}
