@@ -1,0 +1,59 @@
+NAV Business central stuff
+
+https://docs.microsoft.com/en-us/dynamics-nav/endpoints-apis-for-dynamics
+
+Enable the API:
+docker container ls
+docker exec -it 24a8b62318fd powershell -noexit c:\run\prompt.ps1
+Set-NAVServerConfiguration -ServerInstance NAV -KeyName ApiServicesEnabled -KeyValue true
+
+#Docs of public API:s
+https://docs.microsoft.com/en-us/dynamics-nav/fin-graph/api/dynamics_taxgroups_get
+
+#List all meta data
+https://24a8b62318fd:7048/NAV/api/beta/$metadata
+
+Companies:
+https://24a8b62318fd:7048/NAV/api/beta/companies
+We need to substitute in CIG with the ID from NAV
+
+#Currencies:
+https://24a8b62318fd:7048/NAV/api/beta/companies(2eb67d9c-1bf8-4df6-8220-cd9aade07c09)/currencies
+#No rates exists yet :-(
+
+Vendors:
+https://24a8b62318fd:7048/NAV/api/beta/companies(2eb67d9c-1bf8-4df6-8220-cd9aade07c09)/vendors/
+All changed:
+https://24a8b62318fd:7048/NAV/api/beta/companies(2eb67d9c-1bf8-4df6-8220-cd9aade07c09)/vendors?$filter=lastModifiedDateTime gt 2018-12-06T17:43:09.873Z
+
+#Including payment info
+https://24a8b62318fd:7048/NAV/api/beta/companies(2eb67d9c-1bf8-4df6-8220-cd9aade07c09)/vendors?$filter=lastModifiedDateTime gt 2018-12-23T13:44:09.873Z&$expand=paymentMethod
+#Bank accounts etc. is not included...
+
+
+https://24a8b62318fd:7048/NAV/api/beta/companies(2eb67d9c-1bf8-4df6-8220-cd9aade07c09)/accounts
+#Last modified exists
+
+#Dimensions
+https://24a8b62318fd:7048/NAV/api/beta/companies(2eb67d9c-1bf8-4df6-8220-cd9aade07c09)/dimensions
+
+#Get Dimension values
+https://24a8b62318fd:7048/NAV/api/beta/companies(2eb67d9c-1bf8-4df6-8220-cd9aade07c09)/dimensions(cc159d42-176f-4fd0-8288-05c19a56a781)/dimensionValues
+
+#Payment terms
+https://24a8b62318fd:7048/NAV/api/beta/companies(2eb67d9c-1bf8-4df6-8220-cd9aade07c09)/paymentTerms
+
+#Tax groups
+https://24a8b62318fd:7048/NAV/api/beta/companies(2eb67d9c-1bf8-4df6-8220-cd9aade07c09)/taxGroups
+
+#Items
+https://24a8b62318fd:7048/NAV/api/beta/companies(2eb67d9c-1bf8-4df6-8220-cd9aade07c09)/items
+
+#Payment retrieval, use lastModifiedDateTime filter. Might be needed to have a lookup for DocumentNumber. Thought it was the invoice number?
+https://24a8b62318fd:7048/NAV/api/beta/companies(2eb67d9c-1bf8-4df6-8220-cd9aade07c09)/generalLedgerEntries?$filter=documentType eq 'Payment'
+#Is document number, invoice number?
+https://24a8b62318fd:7048/NAV/api/beta/companies(2eb67d9c-1bf8-4df6-8220-cd9aade07c09)/generalLedgerEntries?$filter=documentType eq 'Payment' and documentNumber eq '38661'
+
+#Or get all changed invoices:
+https://24a8b62318fd:7048/NAV/api/beta/companies(2eb67d9c-1bf8-4df6-8220-cd9aade07c09)/purchaseInvoices?$filter=status eq 'Paid'
+#The status is set to paid, should work. How to handle party paid

@@ -1,5 +1,6 @@
 #List images installed
 sudo docker images
+docker image ls
 #Run an image from repository debian32
 sudo docker run -t -i debian32 /bin/bash
 #Apply some changes to the container in that bash, i added /tmp/myFile.txt
@@ -12,3 +13,30 @@ sudo docker images
 
 #Run the new container, check /tmp/myFile.txt, it should be there. If you run the intitial one, the file is not there
 sudo docker run -t -i emilw/debian:v2 /bin/bash
+
+###For Windows
+docker pull mcr.microsoft.com/businesscentral/sandbox:base
+
+#Remove image
+docker image rm --force 2a7587abad04
+
+#Remove container
+docker rm 926650a70228
+docker rm --force 7c2703119b58
+
+#List containers
+docker container ls -all
+
+#Stop container
+docker container stop e626e2180100
+docker container kill e626e2180100
+
+#Start container
+docker run -e accept_eula=Y -m 4G mcr.microsoft.com/businesscentral/sandbox:base
+
+#Run container
+C:\Windows\system32\CMD.EXE /C docker.exe exec -it NAV2018CU10 powershell -noexit c:\run\prompt.ps1
+
+
+docker exec -it 1f988cd755cd powershell -noexit c:\run\prompt.ps1
+
